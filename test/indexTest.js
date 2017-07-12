@@ -1,46 +1,22 @@
 var expect = require("chai").expect;
 var app = require("../test.js");
 
-describe("check multiplication of 99*98", function() {
-    var string = "99×98";
+describe("check functions standalone works", function() {
+    var multiCase = "99×98";
+    var divisionCase = "234÷18";
 
-    it("multiple has charAt location of 2", function() {
-        var input = app.position(string);
-        expect(input).to.equal(2);
-    });
-
-    it("show the last two numbers is 98", function() {
-        var input = app.last(string);
-        expect(input).to.equal(98);
-    });
-
-    it("multiply works and returns correct result", function() {
-        var input = app.multiply(string);
+    it("multiply works and returns correct result for 99*98", function() {
+        var input = app.multiply(multiCase);
         expect(input).to.equal(99 * 98);
     });
-});
-
-
-describe("check multiplication of 234*18", function() {
-    var string = "234×18";
-
-    it("multiple operation has charAt location of 3", function() {
-        var input = app.position(string);
-        expect(input).to.equal(3);
-    });
-
-
-    it("show the last two numbers of 18", function() {
-        var input = app.last(string);
-        expect(input).to.equal(18);
-    });
-
-    it("multiply works", function() {
-        var input = app.multiply(string);
-        expect(input).to.equal(234 * 18);
+    
+    it("division works and returns correct result for 234/18", function() {
+        var input = app.divide(divisionCase);
+        expect(input).to.equal(234 / 18);
     });
 });
 
+/*
 describe("parse string and push into an array first", function() {
     
     var string2 = "234234+9934÷6-7-33+22÷33+";
@@ -180,20 +156,6 @@ describe("checks type of operations", function() {
     it("has divide, addition, and subtract",function() {
         expect(output).to.equal(["divide","add","subtract"]);
     });
-    
-});
-
-/*
-describe("ability to find the right operation", function() {
-   it("able to find the multiple operation", function(){
-      var answer = "multiply";
-      var string = "234×18";
-      var input = app.findOperation(string);
-      expect(input).to.equal(answer);
-      
-       
-   });
-   
     
 });
 */
