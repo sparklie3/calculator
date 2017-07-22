@@ -26,15 +26,6 @@ var last = function(string) {
     }
 };
 
-var findAllOperations = function(string) {
-    var operationsArrayPosition = [];
-    for (var i = 0; i < string.length; i++) {
-        if (string.charAt(i) !== "." && isNaN(string.charAt(i)) && i !== string.length - 1) {
-            operationsArrayPosition.push(i);
-        }
-    }
-    return operationsArrayPosition;
-};
 
 
 var fullArray = function(string) {
@@ -59,6 +50,18 @@ var fullArray = function(string) {
     //console.log(fullArray);
     return fullArray;
 };
+
+
+var findAllOperations = function(string) {
+    var operationsArrayPosition = [];
+    for (var i = 0; i < string.length; i++) {
+        if (string.charAt(i) !== "." && isNaN(string.charAt(i)) && i !== string.length - 1) {
+            operationsArrayPosition.push(i);
+        }
+    }
+    return operationsArrayPosition;
+};
+
 
 var multiply = function(value) {
     var tempArray;
@@ -179,6 +182,8 @@ module.exports.position = position;
 module.exports.last = last;
 module.exports.findAllOperations = findAllOperations;
 module.exports.fullArray = fullArray;
+
+
 module.exports.multiply = multiply;
 module.exports.divide = divide;
 module.exports.addition = add;

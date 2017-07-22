@@ -4,7 +4,9 @@ var app = require("../test.js");
 describe("check functions standalone works", function() {
     var multiCase = "99×98";
     var divisionCase = "234÷18";
-
+    var subtractCase = "434-43";
+    var addCase = "2343+324";
+    
     it("multiply works and returns correct result for 99*98", function() {
         var input = app.multiply(multiCase);
         expect(input).to.equal(99 * 98);
@@ -14,13 +16,22 @@ describe("check functions standalone works", function() {
         var input = app.divide(divisionCase);
         expect(input).to.equal(234 / 18);
     });
+    
+    it("subtraction works and returns correct result for 434-43", function() {
+        var input = app.subtract(subtractCase);
+        expect(input).to.equal(434-43);
+    });
+    
+    it("addition works and returns correct result for 2343+324", function() {
+        var input = app.addition(addCase);
+        expect(input).to.equal(2343+324);
+    });
+    
 });
 
-/*
-describe("parse string and push into an array first", function() {
-    
-    var string2 = "234234+9934÷6-7-33+22÷33+";
 
+describe("puts all operations into an array correctly", function() {
+    
     it("position of all the operations in an array correctly for string 99×99÷666-33+88÷33", function() {
         var answer = [2, 5, 9, 12, 15];
         var string = "99×99÷666-33+88÷33";
@@ -28,13 +39,30 @@ describe("parse string and push into an array first", function() {
         expect(input).to.deep.equal(answer);
     });
     
-    it("position of all the operations in an array correctly when there are multiple periods for string 99.3×99.5÷666-33.0+88.1÷33.3", function() {
+    it("position of all the operations in an array correctly when there are multiple periods for string 0.993×99.5÷666-33.0+88.1÷33.3", function() {
         var answer = [4, 9, 13, 18, 23];
-        var string = "99.3×99.5÷666-33.0+88.1÷33.3";
+        var string = "0.93×99.5÷666-33.0+88.1÷33.3";
         var input = app.findAllOperations(string);
         expect(input).to.deep.equal(answer);
     });
     
+    it("no operaitons if value is 0", function() {
+        var answer = [];
+        var string = "0";
+        var input = app.findAllOperations(string);
+        expect(input).to.deep.equal(answer);
+    });
+    
+    it("one operaitons if value is 0+2", function() {
+        var answer = [1];
+        var string = "0+2";
+        var input = app.findAllOperations(string);
+        expect(input).to.deep.equal(answer);
+    });
+    
+});
+
+/*
 
     it("array of all the values in the array for 99×99÷666-33+88÷33", function() {
         var answer = [99, "×", 99, "÷", 666, "-", 33, "+", 88, "÷", 33];
@@ -46,6 +74,7 @@ describe("parse string and push into an array first", function() {
 
     it("array of all the values for a second case 234234+9934÷6-7-33+22÷33+ and remove the last operation", function() {
         var answer = [234234, "+", 9934, "÷", 6, "-", 7, "-", 33, "+", 22, "÷", 33];
+        var string2 = "234234+9934÷6-7-33+22÷33+";
         var input = app.fullArray(string2);
         expect(input).to.deep.equal(answer);
 
@@ -54,7 +83,7 @@ describe("parse string and push into an array first", function() {
 });
 
 
-
+/*
 describe("calculation  is done correctly", function() {
     
     
