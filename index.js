@@ -1,6 +1,7 @@
 /*global $*/
 
 $(document).ready(function() {
+<<<<<<< HEAD
     var period = false;
     
     function periodInsert(data){
@@ -81,6 +82,8 @@ $(document).ready(function() {
     
     
     
+=======
+ 
     
 });
 
