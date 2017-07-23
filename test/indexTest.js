@@ -1,190 +1,127 @@
 var expect = require("chai").expect;
 var app = require("../test.js");
 
-describe("check functions standalone works", function() {
-    var multiCase = "99×98";
-    var divisionCase = "234÷18";
-    var subtractCase = "434-43";
-    var addCase = "2343+324";
+describe("check multiplyCase works", function() {
+    var multiplyCase = {
+        one : "99×98", 
+        two : "99×99",
+        three : "234×18×18×3434"
+    };
     
     it("multiply works and returns correct result for 99*98", function() {
-        var input = app.multiply(multiCase);
+        var input = app.execute(multiplyCase.one);
         expect(input).to.equal(99 * 98);
     });
     
+    it("multiply works and returns correct result for 99*99", function() {
+        var input = app.execute(multiplyCase.two);
+        expect(input).to.equal(99 * 99);
+    });
+    
+    it("multiply works for 234×18×18×3434", function() {
+        var input = app.execute(multiplyCase.three);
+        expect(input).to.equal(234 * 18 * 18 * 3434);
+    });
+    
+});
+
+describe("check divideCase works", function() {
+    var divideCase = {
+        one : "234÷18",
+        two : "9.2÷9",
+        three : "9÷9"
+    };    
+    
+    
     it("division works and returns correct result for 234/18", function() {
-        var input = app.divide(divisionCase);
+        var input = app.execute(divideCase.one);
         expect(input).to.equal(234 / 18);
     });
     
+    it("division works with periods for 9.2/9", function(){
+       var input = app.execute(divideCase.two);
+       expect(input).to.equal(9.2/9);
+    });
+    
+    it("divide types of calculation works works for 9÷9", function() {
+        var input = app.execute(divideCase.three);
+        expect(input).to.equal(9 / 9);
+    });
+    
+});
+    
+describe("check subtractCase and addCase works", function() {
+    var subtractCase = {
+        one : "434-43"
+    };
+    
+    var addCase = {
+        one : "2343+324"
+    };
+    
     it("subtraction works and returns correct result for 434-43", function() {
-        var input = app.subtract(subtractCase);
+        var input = app.execute(subtractCase.one);
         expect(input).to.equal(434-43);
     });
     
     it("addition works and returns correct result for 2343+324", function() {
-        var input = app.addition(addCase);
+        var input = app.execute(addCase.one);
         expect(input).to.equal(2343+324);
     });
     
 });
 
-
-describe("puts all operations into an array correctly", function() {
     
-    it("position of all the operations in an array correctly for string 99×99÷666-33+88÷33", function() {
-        var answer = [2, 5, 9, 12, 15];
-        var string = "99×99÷666-33+88÷33";
-        var input = app.findAllOperations(string);
-        expect(input).to.deep.equal(answer);
-    });
+describe("check order of operations for complexCase works", function() {
     
-    it("position of all the operations in an array correctly when there are multiple periods for string 0.993×99.5÷666-33.0+88.1÷33.3", function() {
-        var answer = [4, 9, 13, 18, 23];
-        var string = "0.93×99.5÷666-33.0+88.1÷33.3";
-        var input = app.findAllOperations(string);
-        expect(input).to.deep.equal(answer);
-    });
-    
-    it("no operaitons if value is 0", function() {
-        var answer = [];
-        var string = "0";
-        var input = app.findAllOperations(string);
-        expect(input).to.deep.equal(answer);
-    });
-    
-    it("one operaitons if value is 0+2", function() {
-        var answer = [1];
-        var string = "0+2";
-        var input = app.findAllOperations(string);
-        expect(input).to.deep.equal(answer);
-    });
-    
-});
+    var complexCase ={
+        one : "9×9÷9×9",
+        two : "9×9÷9×9+9", 
+        three: "9×9-9÷9×9+9",
+        four : "33-34+34×1÷3",
+        five: "47+34×1+3×88-2",
+        six: "9+9÷9-9",
+        seven : "99×98+234"
+    };
 
-/*
-
-    it("array of all the values in the array for 99×99÷666-33+88÷33", function() {
-        var answer = [99, "×", 99, "÷", 666, "-", 33, "+", 88, "÷", 33];
-        var string = "99×99÷666-33+88÷33";
-        var input = app.fullArray(string);
-        expect(input).to.deep.equal(answer);
-
-    });
-
-    it("array of all the values for a second case 234234+9934÷6-7-33+22÷33+ and remove the last operation", function() {
-        var answer = [234234, "+", 9934, "÷", 6, "-", 7, "-", 33, "+", 22, "÷", 33];
-        var string2 = "234234+9934÷6-7-33+22÷33+";
-        var input = app.fullArray(string2);
-        expect(input).to.deep.equal(answer);
-
-    });
-
-});
-
-
-/*
-describe("calculation  is done correctly", function() {
-    
-    
-    it("multiply works for 234×18×18×3434", function() {
-        var string = "234×18×18×3434";
-        var input = app.multiply(string);
-        //console.log(typeof app.compute2);
-        expect(input).to.equal(234 * 18 * 18 * 3434);
-    });
-    
-    it("multiple works with periods", function(){
-       var string = "9.2÷9";
-       var input = app.divide(string);
-       expect(input).to.equal(9.2/9);
-    });
-
-    it("divide types of calculation works works for 9÷9", function() {
-        var string3 = "9÷9";
-        var m = app.divide(string3);
-        //console.log(typeof app.compute2);
-        expect(m).to.equal(9 / 9);
-    });
     
 
     it("multiple then divide types of calculation works works for 9×9÷9×9", function() {
-        var string2 = "9×9÷9×9";
-        var m = app.multiply(string2);
-        //console.log("test"+m);
-        var d = app.divide(m);
-        //console.log(typeof app.compute2);
-        
-        expect(d).to.equal((9 * 9) / (9 * 9));
+        var input = app.execute(complexCase.one);
+        expect(input).to.equal((9 * 9) / (9 * 9));
+    });
+    
+    it("multiple then divide types of calculation works works for 9+9÷9-9", function() {
+        var input = app.execute(complexCase.six);
+        expect(input).to.equal((9 + (9 / 9)) - 9);
     });
 
-    it("multiple then divid, then add types of calculation works works for 9×9÷9×9+9", function() {
-        var string4 = "9×9÷9×9+9";
-        var m = app.multiply(string4);
-        //console.log("test"+m);
-        var d = app.divide(m);
-        var a = app.addition(d);
-        //console.log(typeof app.compute2);
-        expect(a).to.equal(((9 * 9) / (9 * 9))+9);
+    it("multiple then divide, then add types of calculation works works for 9×9÷9×9+9", function() {
+        var input = app.execute(complexCase.two);
+        expect(input).to.equal(((9 * 9) / (9 * 9))+9);
     });
 
     it("multiple then divid, then add, then subract types of calculation works works for 9×9-9÷9×9+9", function() { 
-        var string5 = "9×9-9÷9×9+9"; 
-        var m = app.multiply(string5);
-        //console.log("test"+m);
-        var d = app.divide(m);
-        var a = app.addition(d);
-        var s = app.subtract(a);
-        //console.log(typeof app.compute2);
-        expect(s).to.equal(81 - ((9 / 81) + 9));
+        var input = app.execute(complexCase.three);
+        expect(input).to.equal(81 - ((9 / 81) + 9));
     });
-
-});
-
-describe("order of operation is done correctly", function(){
-    var scenarioOne = "33-34+34×1÷3";
-    var scenarioTwo = "47+34×1+3×88-2";
-    var scenarioThree = "99×99";
     
-    
-    it("first scenario correct",function(){
-    var scenarioOneOutput= app.subtract(app.addition(app.divide(app.multiply(scenarioOne))));
-    expect(scenarioOneOutput).to.equal(33-((34/3)+34)); //this is -12.3    
+    it("first scenario correct 33-34+34×1÷3",function(){
+        var input = app.execute(complexCase.four);expect(input).to.equal(33-((34/3)+34)); //this is -12.3    
     });
     
     
-    it("second scenario correct",function(){
-    var scenarioTwoOutput= app.subtract(app.addition(app.divide(app.multiply(scenarioTwo))));
-    expect(scenarioTwoOutput).to.equal(343);     
+    it("second scenario correct 47+34×1+3×88-2",function(){
+        var input = app.execute(complexCase.five);
+        expect(input).to.equal(343);     
     });
     
-    it("third scenario correct",function(){
-    var scenarioThreeOutput= app.divide(app.multiply(scenarioThree));
-    expect(scenarioThreeOutput).to.equal(9801);
+    it("third scenario correct 99×98+234",function(){
+        var input = app.execute(complexCase.seven);
+        expect(input).to.equal(9936);
     });
     
 });
 
 
-describe("checks type of operations", function() {
-    var scenarioOne = "99×98";
-    var scenarioTwo = "99×98+234";
-    var scenarioThree = "9+9÷9-9";
-    
-    
-    it("has only multiple",function(){
-        
-        
-        expect(output).to.equal(["multiply"]);
-    });
-    
-    it("has multiply and addition",function() {
-        expect(output).to.equal(["multiply","add"]);
-    });
-    
-    it("has divide, addition, and subtract",function() {
-        expect(output).to.equal(["divide","add","subtract"]);
-    });
-    
-});
-*/
+
