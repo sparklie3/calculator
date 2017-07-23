@@ -81,7 +81,8 @@ describe("check order of operations for complexCase works", function() {
         four : "33-34+34×1÷3",
         five: "47+34×1+3×88-2",
         six: "9+9÷9-9",
-        seven : "99×98+234"
+        seven : "99×98+234",
+        eight : "8×6÷9×2.1+5×6"
     };
 
     
@@ -119,6 +120,11 @@ describe("check order of operations for complexCase works", function() {
     it("third scenario correct 99×98+234",function(){
         var input = app.execute(complexCase.seven);
         expect(input).to.equal(9936);
+    });
+    
+    it("8×6÷9×2.1+5×6 scenario", function() {
+        var input = app.execute(complexCase.eight);
+        expect(input).to.equal(((8*6)/(9*2.1))+(5*6));
     });
     
 });
