@@ -1,190 +1,105 @@
-var position = function(string) {
-    var multiplyPosition = [];
-    if (string.indexOf("×") !== -1) {
-        for (var i = 0; i < string.length; i++) {
-            if (string.charAt(i) === "×") {
-                multiplyPosition.push(Number(i));
-            }
-        }
-    }
-    if (multiplyPosition.length === 1) {
-        return multiplyPosition[0];
-    }
-    else {
-        return multiplyPosition;
-    }
+var period = false;
+var multiply = "×";
+var divide = "÷";
+var add = "+";
+var subtract = "-";
 
-};
+function returnArrayofOperationPosition(string) {
+    var outputArray = [];
 
-
-var last = function(string) {
-    for (var i = string.indexOf("×") + 1; i < string.length; i++) {
-        if (isNaN(string.charAt(i)) || i + 1 === string.length) {
-            var after = string.slice(string.indexOf("×") + 1, i + 1);
-            return Number(after);
-        }
-    }
-};
-
-
-
-var fullArray = function(string) {
-    // this if statement removes the last character if it is an operation
+    // this if statement removes the last character if it is an operation or period
     if (isNaN(string.charAt(string.length - 1))) {
-        string = string.substring(0, string.length - 1);
+        string = string.slice(0, -1);
     }
-    var tempArray = findAllOperations(string);
-    var fullArray = [];
-    fullArray.push(Number(string.slice(0, tempArray[0])));
-    for (var i = 0; i < tempArray.length; i++) {
-        if (i % 2 == 0) {
-            fullArray.push(string.slice(tempArray[i], tempArray[i] + 1));
-            fullArray.push(Number(string.slice(tempArray[i] + 1, tempArray[i + 1])));
-        }
-        else {
-            fullArray.push(string.slice(tempArray[i], tempArray[i] + 1));
-            fullArray.push(Number(string.slice(tempArray[i] + 1, tempArray[i + 1])));
-        }
 
-    }
-    //console.log(fullArray);
-    return fullArray;
-};
-
-
-var findAllOperations = function(string) {
-    var operationsArrayPosition = [];
     for (var i = 0; i < string.length; i++) {
         if (string.charAt(i) !== "." && isNaN(string.charAt(i)) && i !== string.length - 1) {
-            operationsArrayPosition.push(i);
+            outputArray.push(i);
         }
     }
-    return operationsArrayPosition;
-};
+    return outputArray;
+}
 
 
-var multiply = function(value) {
-    var tempArray;
-    if (!Array.isArray(value)) {
-        tempArray = fullArray(value);
-        var x = multiply(tempArray);
-        return x; //this return is to handle the final recursion
+function returnFinalArray(string) {
+    var outputArray = [];
+    // this if statement removes the last character if it is an operation or period
+    if (isNaN(string.charAt(string.length - 1))) {
+        string = string.slice(0, -1);
     }
-    else if (value.length > 1) {
-        for (var i = 0; i < value.length; i++) {
-            var output;
-            if (i % 2 !== 0 && value[i] === "×") {
-                var valueLocation = value.indexOf(value[i]);
-                var result = value[i - 1] * value[i + 1];
-                value.splice(valueLocation - 1, 3, result);
-                output = multiply(value);
-                return output;
-            }
-            else if (i === value.length - 2) {
-                return value;
-            }
+    //call function to create array of position where the operation is located
+    var tempArray = returnArrayofOperationPosition(string);
+
+    //creates final array with all numbers and operations
+    outputArray.push(Number(string.slice(0, tempArray[0])));
+    for (var i = 0; i < tempArray.length; i++) {
+        if (i % 2 == 0) {
+            outputArray.push(string.slice(tempArray[i], tempArray[i] + 1));
+            outputArray.push(Number(string.slice(tempArray[i] + 1, tempArray[i + 1])));
+        }
+        else {
+            outputArray.push(string.slice(tempArray[i], tempArray[i] + 1));
+            outputArray.push(Number(string.slice(tempArray[i] + 1, tempArray[i + 1])));
+        }
+    }
+    console.log(outputArray);
+    return outputArray;
+}
+
+function calculateNumberOfOperators(data) {
+    var operators = {
+        "multiply": 0,
+        "divide": 0,
+        "add": 0,
+        "subtract": 0
+    };
+    //getting the position of all operators
+    var operatorPositionArray = returnArrayofOperationPosition(data);
+
+    //updates the operator json object
+    for (var i = 0; i < operatorPositionArray.length; i++) {
+        switch (data[operatorPositionArray[i]]) {
+            case multiply:
+                operators.multiply++;
+                break;
+            case divide:
+                operators.divide++;
+                break;
+            case add:
+                operators.add++;
+                break;
+            case subtract:
+                operators.subtract++;
+                break;
         }
 
-    }
-    else {
-        return value[0];
-    }
-};
-
-var divide = function(value) {
-    var tempArray;
-    if (!Array.isArray(value)) {
-        tempArray = fullArray(value);
-        var x = divide(tempArray);
-        return x; //this return is to handle the final recursion
-    }
-    else if (value.length > 1) {
-        for (var i = 0; i < value.length; i++) {
-            var output;
-            if (i % 2 !== 0 && value[i] === "÷") {
-                var valueLocation = value.indexOf(value[i]);
-                var result = value[i - 1] / value[i + 1];
-                value.splice(valueLocation - 1, 3, result);
-                output = divide(value);
-                return output;
-            }
-            else if (i === value.length - 2) {
-                return value;
-            }
-        }
 
     }
-    else {
-        return value[0];
+    return operators;
+}
+
+function executeOrderOfOperations(value) {
+    //console.log(value);
+    var operator = calculateNumberOfOperators(value);
+    var arg = returnFinalArray(value);
+    for (var i = 0; i < operator.multiply; i++) {
+        arg.splice(arg.indexOf(multiply) - 1, 3, arg[arg.indexOf(multiply) - 1] * arg[arg.indexOf(multiply) + 1]);
+        console.log(arg);
     }
-};
-
-var add = function(value) {
-    var tempArray;
-    if (!Array.isArray(value)) {
-        tempArray = fullArray(value);
-        var x = add(tempArray);
-        return x; //this return is to handle the final recursion
+    for (var i = 0; i < operator.divide; i++) {
+        arg.splice(arg.indexOf(divide) - 1, 3, arg[arg.indexOf(divide) - 1] / arg[arg.indexOf(divide) + 1]);
+        console.log(arg);
     }
-    else if (value.length > 1) {
-        for (var i = 0; i < value.length; i++) {
-            var output;
-            if (i % 2 !== 0 && value[i] === "+") {
-                var valueLocation = value.indexOf(value[i]);
-                var result = Number(value[i - 1]) + Number(value[i + 1]);
-                value.splice(valueLocation - 1, 3, result);
-                output = add(value);
-                return output;
-            }
-            else if (i === value.length - 2) {
-                return value;
-            }
-        }
-
+    for (var i = 0; i < operator.add; i++) {
+        arg.splice(arg.indexOf(add) - 1, 3, arg[arg.indexOf(add) - 1] + arg[arg.indexOf(add) + 1]);
+        console.log(arg);
     }
-    else {
-        return value[0];
+    for (var i = 0; i < operator.subtract; i++) {
+        arg.splice(arg.indexOf(subtract) - 1, 3, arg[arg.indexOf(subtract) - 1] - arg[arg.indexOf(subtract) + 1]);
+        console.log(arg);
     }
-};
+    return arg[0];
+}
 
 
-var subtract = function(value) {
-    var tempArray;
-    if (!Array.isArray(value)) {
-        tempArray = fullArray(value);
-        var x = subtract(tempArray);
-        return x; //this return is to handle the final recursion
-    }
-    else if (value.length > 1) {
-        for (var i = 0; i < value.length; i++) {
-            var output;
-            if (i % 2 !== 0 && value[i] === "-") {
-                var valueLocation = value.indexOf(value[i]);
-                var result = Number(value[i - 1]) - Number(value[i + 1]);
-                value.splice(valueLocation - 1, 3, result);
-                output = subtract(value);
-                return output;
-            }
-            else if (i === value.length - 2) {
-                return value;
-            }
-        }
-
-    }
-    else {
-        return value[0];
-    }
-};
-
-
-
-module.exports.position = position;
-module.exports.last = last;
-module.exports.findAllOperations = findAllOperations;
-module.exports.fullArray = fullArray;
-
-
-module.exports.multiply = multiply;
-module.exports.divide = divide;
-module.exports.addition = add;
-module.exports.subtract = subtract;
+module.exports.execute = executeOrderOfOperations;
